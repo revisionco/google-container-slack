@@ -1,12 +1,13 @@
 {
   "name": "google-container-slack",
   "version": "0.0.1",
-  "description": "Slack integration for Google Cloud Container Builder, using Google Cloud Functions",
+  "description":
+    "Slack integration for Google Cloud Container Builder, using Google Cloud Functions",
   "main": "index.js",
   "scripts": {
     "test": "node_modules/.bin/mocha --reporter spec",
-    "setup": ". ./setup.sh",
-    "teardown": ". ./teardown.sh"
+    "setup": "source .env && . ./setup.sh",
+    "teardown": "source .env && . ./teardown.sh"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,8 @@
   },
   "devDependencies": {
     "async": "^2.1.5",
+    "eslint": "^4.10.0",
+    "eslint-config-react-app": "^2.0.1",
     "mocha": "3.2.0",
     "should": "11.2.1"
   },
