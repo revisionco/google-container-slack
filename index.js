@@ -46,6 +46,9 @@ const STATUS_COLOR = {
 // createSlackMessage create a message from a build object.
 module.exports.createSlackMessage = build => {
   let images = build.images || [];
+  let timestamp = build.finishTime
+    ? new Date(build.finishTime)
+    : new Date(build.startTime);
   let message = {
     username: 'GCP',
     icon_url:
@@ -57,41 +60,18 @@ module.exports.createSlackMessage = build => {
         color: STATUS_COLOR[build.status] || DEFAULT_COLOR,
         fields: [
           {
-            title: 'Build',
+            title: `Build [${build.status}]`,
             value: `<${build.logUrl}|${build.id}>`,
-            short: true,
-          },
-          {
-            title: 'Status',
-            value: `[${build.status}]`,
-            short: true,
-          },
-          {
-            title: 'Repository',
-            value: `${build.source.repoSource.repoName}`,
-            short: true,
-          },
-          {
-            title: 'Branch',
-            value: `[${build.source.repoSource.branchName}]`,
-            short: true,
+            short: false,
           },
         ],
-        footer: 'Google Cloud Container Builder',
-        ts: Math.round(new Date(build.finishTime).getTime() / 1000),
+        footer: `${build.source.repoSource.repoName} [${
+          build.source.repoSource.branchName
+        }]`,
+        ts: Math.round(timestamp.getTime() / 1000),
       },
     ],
   };
-
-  // Add duration to the message.
-  if (build.finishTime) {
-    message.attachments[0].fields.push({
-      title: 'Duration',
-      value: humanizeDuration(
-        new Date(build.finishTime) - new Date(build.startTime)
-      ),
-    });
-  }
 
   return message;
 };
