@@ -5,6 +5,8 @@
 , 
 "SUCCESS"
 , 
+"CANCELLED"
+, 
 "FAILURE"
 , 
 "TIMEOUT"

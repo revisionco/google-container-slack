@@ -37,6 +37,7 @@ const DEFAULT_COLOR = '#4285F4'; // blue
 const STATUS_COLOR = {
   QUEUED: DEFAULT_COLOR,
   WORKING: DEFAULT_COLOR,
+  CANCELLED: '#AAAAAA',
   SUCCESS: '#34A853', // green
   FAILURE: '#EA4335', // red
   TIMEOUT: '#FBBC05', // yellow
@@ -53,18 +54,13 @@ module.exports.createSlackMessage = build => {
     username: 'GCP',
     icon_url:
       'https://ssl.gstatic.com/pantheon/images/containerregistry/container_registry_color.png',
-    text: `*Image:* \`${images[0]}\``,
     mrkdwn: true,
     attachments: [
       {
         color: STATUS_COLOR[build.status] || DEFAULT_COLOR,
-        fields: [
-          {
-            title: `Build [${build.status}]`,
-            value: `<${build.logUrl}|${build.id}>`,
-            short: false,
-          },
-        ],
+        author_name: `Build [${build.status}]`,
+        author_link: build.logUrl,
+        text: `${images[0]}`,
         footer: `${build.source.repoSource.repoName} [${
           build.source.repoSource.branchName
         }]`,
